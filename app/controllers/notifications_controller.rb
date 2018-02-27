@@ -8,4 +8,4 @@ class NotificationsController < ApplicationController
 	    @notification.user_id = current_user.id
 		@notification.save
   end
-end
+end 

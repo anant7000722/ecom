@@ -1,29 +1,36 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :upvote]
-
+  include ApplicationHelper
   # GET /products
   # GET /products.json
   def index
+
+    search = params[:search]
+      if params[:search].present?
+        @products = Product.where("name like? OR name like? OR name like? OR name like?","%#{search.capitalize}%","%#{search.downcase}%","%#{search.upcase}%",
+          "%#{search.titleize}%")
+      else
+        @products = Product.all
+      end
+    
+  end
+
+  def show 
     @products = Product.all
+    @reviews = Review.where(product_id: @product.id).order("created_at DESC").limit(2)
+    @users = User.all
+   
+    @reviews_for_modal = Review.where(product_id: @product.id).order("created_at DESC")
   end
 
-  # GET /products/1
-  # GET /products/1.json
-  def show
-  end
-
-  # GET /products/new
   def new
     @product = Product.new
   end
 
-  # GET /products/1/edit
   def edit
   end
 
-  # POST /products
-  # POST /products.json
-  def create
+  def create 
     @product = Product.new(product_params)
 
     respond_to do |format|
@@ -37,13 +44,18 @@ class ProductsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /products/1
-  # PATCH/PUT /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
-        format.json { render :show, status: :ok, location: @product }
+       if @product.update(product_params)
+        
+        if @product.status == true && @product.notifications
+          
+            user = []
+            user = Notification.where(product_id: @product.id)
+            notification_send(user, @product.id)
+        end 
+          format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+          format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit }
         format.json { render json: @product.errors, status: :unprocessable_entity }
@@ -51,8 +63,6 @@ class ProductsController < ApplicationController
     end
   end
 
-  # DELETE /products/1
-  # DELETE /products/1.json
   def destroy
     @product.destroy
     respond_to do |format|
@@ -66,13 +76,12 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    
     def set_product
       @product = Product.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:name, :description, :image, :category_id, :status)
+      params.require(:product).permit(:name, :description, :image, :category_id, :status, :price)
     end
 end

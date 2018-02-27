@@ -1,15 +1,30 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Products</h1>
-
-
-
-<div class="row">
-  <% @products.each do |product| %>
-    <div class="col-sm-6 col-md-3">
-      <div class="thumbnail">
-        <%= link_to (image_tag product.image.url(:medium), class: 'image'), product %>
-      </div>
-    </div>
-  <% end %>
-</div>
+<% if params[:search].present? %>
+	<% if @products.present? %>
+		<h1> By Search </h1>
+			<div class="row">
+		  		<% @products.each do |product| %>
+		    		<div class="col-sm-6 col-md-3">
+		      			<div class="thumbnail">
+		        			<%= link_to (image_tag product.image.url(:medium), class: 'image'), product %>
+		      			</div>
+		    		</div>
+		  		<% end %>
+			</div>
+	<% else %>
+		<div role = "alert" style = "min-height: 738px">
+			<strong>Warning!</strong> No movies forund with this name, search again.
+		</div>
+	<% end %>
+<% else %>	
+	<h1>Products</h1>
+		<div class="row">
+		  <% @products.each do |product| %>
+		    <div class="col-sm-6 col-md-3">
+		      <div class="thumbnail">
+		        <%= link_to (image_tag product.image.url(:medium), class: 'image'), product %>
+		      </div>
+		    </div>
+		  <% end %>
+		</div>
+<% end %>

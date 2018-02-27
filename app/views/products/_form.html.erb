@@ -1,3 +1,4 @@
+<div class = "jumbotron" style = "margin-bottom: 310px;">
 <%= form_with(model: product, html: { multipart: true }, local: true) do |form| %>
   <% if product.errors.any? %>
     <div id="error_explanation">
@@ -20,6 +21,10 @@
     <%= form.label :description %>
     <%= form.text_area :description, id: :product_description %>
   </div>
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price, id: :product_price %>
+  </div>
 
   <div class = "field">
     <%= form.label :image %><br>
@@ -38,3 +43,4 @@
     <%= form.submit %>
   </div>
 <% end %>
+</div>

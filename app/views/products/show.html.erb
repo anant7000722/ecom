@@ -1,11 +1,12 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style = "max-height: 647px; margin-bottom: 150px;">
   <div class="panel-body">
-    <div class="row">
-      <div class="col-md-4">
+    <div class="row" >
+      <div class="col-md-6">
         <%= image_tag @product.image.url(:medium) %>
-        
+      </div>
+      <div class = "col-md-4">
         <div class="table-responsive">
-          <table class="table">
+          <table class="table well">
             <tbody>
               <tr>
                 <td><strong>Name:</strong></td>
@@ -16,26 +17,169 @@
                 <td><%= @product.description %></td>
               </tr>
               <tr>
+                <td><strong>Price:</strong></td>
+                <td><%= @product.price %></td>
+              </tr
+              <tr>
                 <td><strong><%= get_status(@product)%></strong></td>
               </tr>
               <tr>
                 <% if @product.status == false %>
-                <td><%= link_to "Notify me", [@product, @product.notifications.build], :method => :post, class: "btn btn-primary" %></td>
+                  <td><%= link_to "Notify me", [@product, @product.notifications.build], :method => :post, class: "btn btn-primary" %></td>
+                <% else %>
+                  <td><%= link_to "Buy Now", products_path, class: "btn btn-success" %></td>
+                  <td><button type="button" href="#modal-container-419269" data-toggle="modal" class="btn btn-danger  " style=" width:200px">Add To Cart</button></td>
+                  
                 <%end%>
               </tr>
               <tr>
-                <%= link_to like_product_path(@product), method: :put, class: "btn btn-default" do %>
-                  <span class="glyphicon glyphicon-heart">
-                    <%= @product.get_upvotes.size %>
-                  </span>
-                <% end %>
+                <td><%= link_to "Give Rating", new_product_review_path(@product) %></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-	</div>
+        <%= link_to like_product_path(@product), method: :put, class: "btn btn-default" do %>
+          <span class="glyphicon glyphicon-heart" style="color: red">
+            <%= @product.get_upvotes.size %>
+          </span>
+        <% end %>
+ <div class = "col-md-4 col-md-offset-1", style="margin-left: 1px;" >
+        <h2 class = "review_title"><%= "ALL RATING" %></h2>
+        
+
+        <% if @reviews.blank? %>
+          <h3>No reviews just yet, would you like to add the first! </h3>
+           
+        <% else %>
+          <% @reviews.each do |review| %>
+            <% @users.each do |user| %>
+              <div class = "reviews" >
+                <div class = "star-rating" data-score= <%= review.rating %> ><p>By <%= user.name %></p></div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+        <br/>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">More review</button>
   </div>
-</div>
+
+    </div>
+
+  </div>
+ <br/>
+<div class = "well col-md-12" style = "">
+<h2>Same Category Products</h2>
+   
+      <% @products.each do |product| %>
+
+        <% if product.category_id == @product.category_id %>
+          <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+              <%= link_to (image_tag product.image.url(:medium), class: 'image'), product %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>  
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>
+
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-container-419269" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Product Will Be Added To Cart</h4>
+            </div>
+            
+            <div class="modal-body">
+                <div class="card">
+                    
+                        <img  alt="Carousel Bootstrap Th" src="<%= @product.image.url(:medium) %>" class="img" />
+                
+                        <div class = "imgcontainer">
+                            <hr>
+                            <h3 class="text-primary  text-left" ><%=@product.name%></h3>            
+                            <h3 class="text-primary  text-left" ><b>Price : <%=@product.price%></b></h3>
+                        </div>
+                </div>
+                
+                   
+            </div>
+                       <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                
+            </div>
+                    
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ratings</h4>
+        </div>
+        <div class="modal-body">
+         
+              <div class = "reviews" >
+                <div class = "row">
+                  <% @reviews_for_modal.each do |review| %>
+                    <% @users.each do |user| %>
+                    <div class = "col-md-8">
+                      <div class = "star-rating" data-score= <%= review.rating %> ><p>By <%= user.name %></p></div>
+                    </div>
+                    
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+         
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+ 
+ <script>
+  $('.star-rating').raty({
+    path: '/assets',
+    readOnly: true,
+    score: function() {
+      return $(this).attr('data-score');
+
+    }
+  });
+</script>
+  
