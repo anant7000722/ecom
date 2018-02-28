@@ -57,3 +57,5 @@ gem 'paperclip', '~> 5.2', '>= 5.2.1'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
 gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
 gem 'acts_as_votable', '~> 0.11.1'
+gem 'stripe'
+gem "figaro"

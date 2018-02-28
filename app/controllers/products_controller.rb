@@ -48,6 +48,7 @@ class ProductsController < ApplicationController
   end
 
   def update
+    debugger
     respond_to do |format|
        if @product.update(product_params)
         
