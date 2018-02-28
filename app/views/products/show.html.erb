@@ -123,6 +123,8 @@
                             <hr>
                             <h3 class="text-primary  text-left" ><%=@product.name%></h3>            
                             <h3 class="text-primary  text-left" ><b>Price : <%=@product.price%></b></h3>
+                           
+                            <%= link_to "Add to Cart", carts_path, :method => :post, class: "btn btn-primary" %>
                         </div>
                 </div>
                 

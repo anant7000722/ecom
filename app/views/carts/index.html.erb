@@ -1,0 +1,44 @@
+<div class = "well" style="margin-bottom: 350px">
+	<h1>Your Cart</h1>
+	<div class = "jumbotron" style="background-color: greenyellow" >
+		<div class = "row">
+			<div class = "col-md-2">
+				<h3>Product</h3>
+			</div>
+			<div class = "col-md-2">
+				<h3>Name</h3>
+			</div>
+			<div class = "col-md-2">
+				<h3>Description</h3>
+			</div>
+			<div class = "col-md-2">
+				<h3>Price</h3>
+			</div>
+			
+		</div>
+	</div>
+	<div class = "jumbotron" style="background-color: greenyellow">
+		<% @cart.each do |cart| %>
+			<div class = "row">
+				<div class = "col-md-2">
+					<div class="thumbnail">
+		              <%= image_tag cart.product.image.url(:medium) %>
+		           	</div>
+				</div>
+			
+				<div class = "col-md-2">
+					<h3><%= cart.product.name %></h3>
+				</div>
+				<div class = "col-md-2">
+					<h3><%= cart.product.description %></h3>
+				</div>
+				<div class = "col-md-2">
+					<h3><%= cart.product.price %></h3>
+				</div>
+				<div class = "col-md-2">
+					<button type="button" class="btn btn-danger">Remove</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>

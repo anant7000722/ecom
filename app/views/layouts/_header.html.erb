@@ -24,9 +24,11 @@
       </ul>
       <form class= "navbar-form navbar-right", role: "search" >
         <div class = "form-group">
-        
+          <%= link_to "Your Cart", carts_path, :method => :post %>
+                        
           <%= text_field_tag :search, params[:search], class: "form-control" %>
           <%= submit_tag "Search", name:nil, class: "btn btn-default" %>
+        </div>
         </form>
       
     </div><!-- /.navbar-collapse -->

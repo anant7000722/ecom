@@ -13,10 +13,13 @@ class ProductsController < ApplicationController
         @products = Product.all
       end
     
-  end
+  end 
 
   def show 
+
     @products = Product.all
+    session[:product_id] = @product.id
+ 
     @reviews = Review.where(product_id: @product.id).order("created_at DESC").limit(2)
     @users = User.all
    
